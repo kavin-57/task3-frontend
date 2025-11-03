@@ -1,67 +1,78 @@
-Task 2: Kubernetes Deployment
-Overview
-Deployment of the Task Manager REST API to Kubernetes with MongoDB persistence and Kubernetes pod execution.
+# Task 4: CI/CD Pipeline with GitHub Actions
 
-Quick Start
-Prerequisites
-Docker Desktop with Kubernetes enabled
+## Overview
+Complete CI/CD pipeline for the Task Manager application using GitHub Actions.
 
-kubectl CLI
+## Pipeline Features
+- ✅ **Automated builds** on push to main/develop branches
+- ✅ **Maven build** for Java backend
+- ✅ **Node.js build** for React frontend
+- ✅ **Docker image building** for both services
+- ✅ **Unit testing** for both backend and frontend
+- ✅ **Security scanning** (placeholder for SAST tools)
+- ✅ **Docker image publishing** to Docker Hub
+- ✅ **Staging deployment** (placeholder for Kubernetes)
 
-Maven
+## Pipeline Stages
 
-Deploy
-bash
-# Build and deploy
-mvn clean package
-docker build -t taskrunner:latest .
+### 1. Build Backend
+- Java 17 setup with Maven caching
+- Compile and package Spring Boot application
+- Run unit tests
+- Build Docker image
+- Push to Docker Hub (main branch only)
 
-kubectl apply -f k8s/mongo-pvc.yaml
-kubectl apply -f k8s/mongo.yaml  
-kubectl apply -f k8s/app-rbac.yaml
-kubectl apply -f k8s/taskrunner.yaml
-Access
-bash
-# Port forwarding
-kubectl port-forward deployment/taskrunner 8080:8080
+### 2. Build Frontend
+- Node.js 18 setup with npm caching
+- Install dependencies
+- Run tests with coverage
+- Build production bundle
+- Build Docker image with nginx
+- Push to Docker Hub (main branch only)
 
-# Test API
-curl http://localhost:8080/api/tasks
-Key Features
-✅ Kubernetes Deployment - App and MongoDB in separate pods
+### 3. Security Scan
+- Static Application Security Testing (SAST)
+- Docker image vulnerability scanning
 
-✅ Persistent Storage - MongoDB data survives pod restarts
+### 4. Deploy to Staging
+- Kubernetes deployment (placeholder)
+- Integration testing
 
-✅ Kubernetes Pod Execution - Tasks run in temporary pods instead of locally
+## GitHub Secrets Required
+- `DOCKERHUB_USERNAME`: Docker Hub username
+- `DOCKERHUB_TOKEN`: Docker Hub access token
 
-✅ RBAC Configuration - Secure Kubernetes API access
+## Usage
+The pipeline automatically runs on:
+- Push to `main` branch
+- Push to `develop` branch  
+- Pull requests to `main` branch
 
-✅ NodePort Service - Accessible from host machine
+## Manual Trigger
+```yaml
+# You can also manually trigger the workflow
+workflow_dispatch:
+  inputs:
+    environment:
+      description: 'Environment to deploy to'
+      required: true
+      default: 'staging'
 
-API Endpoints
-GET /api/tasks - List all tasks or single task with ?id=
 
-PUT /api/tasks - Create/update task
+## Step 8: Update Main README.md
 
-DELETE /api/tasks/{id} - Delete task
+Add Task 4 to your main `README.md`:
 
-GET /api/tasks/search?q=name - Search tasks
+```markdown
+## Tasks Completed
+- ✅ **Task 1**: Java REST API with MongoDB
+- ✅ **Task 2**: Kubernetes Deployment with Pod Execution  
+- ✅ **Task 3**: React Frontend with TypeScript and Ant Design
+- ✅ **Task 4**: CI/CD Pipeline with GitHub Actions
 
-PUT /api/tasks/{id}/run - Execute in Kubernetes pod
-
-Architecture
-
-┌─────────────────┐    ┌──────────────────┐
-│   Task Runner   │───▶│     MongoDB      │
-│   (Spring Boot) │    │  (Persistent)    │
-└─────────────────┘    └──────────────────┘
-│
-│ Creates
-▼
-┌─────────────────┐
-│  Temp Pods      │
-│  (busybox)      │
-└─────────────────┘
-
-Verification
-All Task 2 requirements met with Kubernetes pod execution as the key feature.
+## Quick Links
+- [Task 2 Documentation](taskrunner/README.md)
+- [Task 3 Documentation](task3-frontend/README.md)
+- [Task 4 Documentation](task4-ci-cd/README.md)
+- [CI/CD Pipeline](.github/workflows/ci-cd-pipeline.yml)
+- [Screenshots](screenshots/)
