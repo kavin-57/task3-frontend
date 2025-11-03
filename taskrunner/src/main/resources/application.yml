@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/taskdb
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.example.taskrunner: DEBUG

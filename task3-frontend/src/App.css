@@ -1,0 +1,28 @@
+.App {
+    text-align: center;
+}
+
+/* Accessibility improvements */
+.ant-btn:focus,
+.ant-input:focus,
+.ant-select:focus {
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Focus indicators for better accessibility */
+.ant-btn:focus-visible,
+.ant-input:focus-visible {
+    outline: 2px solid #1890ff;
+    outline-offset: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .ant-table {
+        font-size: 12px;
+    }
+
+    .ant-btn {
+        font-size: 12px;
+    }
+}

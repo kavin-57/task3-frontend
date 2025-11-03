@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskrunner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taskrunner
+  template:
+    metadata:
+      labels:
+        app: taskrunner
+    spec:
+      serviceAccountName: taskrunner-sa  # This is crucial!
+      containers:
+        - name: taskrunner
+          image: taskrunner:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: "mongodb://admin:password@mongo:27017/taskdb?authSource=admin"
+            - name: K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskrunner
+spec:
+  type: NodePort
+  selector:
+    app: taskrunner
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080

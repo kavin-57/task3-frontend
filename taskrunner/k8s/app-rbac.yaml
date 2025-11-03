@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: taskrunner-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: taskrunner-role
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/exec"]
+    verbs: ["get", "list", "create", "delete", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: taskrunner-rolebinding
+subjects:
+  - kind: ServiceAccount
+    name: taskrunner-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: taskrunner-role
+  apiGroup: rbac.authorization.k8s.io
